@@ -42,17 +42,22 @@ public class MainWindow extends Application {
         ObservableList<Ibilgailuak> data = Kontroladorea.DatuakSartu();
 
         stage.setTitle("Datuen Taula");
-        stage.setWidth(450);
+        stage.setWidth(550);
         stage.setHeight(550);
         final Label label = new Label("Ibilgailuak");
         label.setFont(new Font("Arial", 20));
 
         table.setEditable(true);
+        
+        TableColumn<Ibilgailuak, String> IdZut = new TableColumn<>("Id");
+        IdZut.setMinWidth(100);
+        IdZut.setCellValueFactory(new PropertyValueFactory<>("id"));
+        IdZut.setCellFactory(TextFieldTableCell.<Ibilgailuak>forTableColumn());
+        IdZut.setOnEditCommit((TableColumn.CellEditEvent<Ibilgailuak, String> t) -> {((Ibilgailuak) t.getTableView().getItems().get(t.getTablePosition().getRow())).setId(t.getNewValue())    ;});
 
         TableColumn<Ibilgailuak, String> ModeloZut = new TableColumn<>("Izena");
         ModeloZut.setMinWidth(100);
-        ModeloZut.setCellValueFactory(
-                new PropertyValueFactory<>("modeloa"));
+        ModeloZut.setCellValueFactory(new PropertyValueFactory<>("modeloa"));
         ModeloZut.setCellFactory(TextFieldTableCell.<Ibilgailuak>forTableColumn());
         ModeloZut.setOnEditCommit((TableColumn.CellEditEvent<Ibilgailuak, String> t) -> {((Ibilgailuak) t.getTableView().getItems().get(t.getTablePosition().getRow())).setModeloa(t.getNewValue());});
 
@@ -70,8 +75,12 @@ public class MainWindow extends Application {
         MatrikulaZut.setCellFactory(TextFieldTableCell.<Ibilgailuak>forTableColumn());
         MatrikulaZut.setOnEditCommit((TableColumn.CellEditEvent<Ibilgailuak, String> t) -> {((Ibilgailuak) t.getTableView().getItems().get(t.getTablePosition().getRow())).setMatrikula(t.getNewValue());
                 });
+        
         table.setItems(data);
-        table.getColumns().addAll(ModeloZut, MarkaZut, MatrikulaZut);
+        table.getColumns().addAll(IdZut, ModeloZut, MarkaZut, MatrikulaZut);
+        final TextField addId = new TextField();
+        addId.setPromptText("Id");
+        addId.setMaxWidth(ModeloZut.getPrefWidth());
         final TextField addModeloa = new TextField();
         addModeloa.setPromptText("Modeloa");
         addModeloa.setMaxWidth(ModeloZut.getPrefWidth());
@@ -83,9 +92,10 @@ public class MainWindow extends Application {
         addMatrikula.setPromptText("Matrikula");
 
         final Button addButton = new Button("Gehitu");
-        addButton.setOnAction((ActionEvent e) -> {Ibilgailuak i = new Ibilgailuak(addModeloa.getText(),addMarka.getText(),addMatrikula.getText());
+        addButton.setOnAction((ActionEvent e) -> {Ibilgailuak i = new Ibilgailuak(addId.getText(),addModeloa.getText(),addMarka.getText(),addMatrikula.getText());
             data.add(i);
 
+            addId.clear();
             addModeloa.clear();
             addMarka.clear();
             addMatrikula.clear();
@@ -97,7 +107,7 @@ public class MainWindow extends Application {
             data.remove(ibilgailu);
         });
 
-        hb.getChildren().addAll(addModeloa, addMarka, addMatrikula, addButton, removeButton);
+        hb.getChildren().addAll(addId, addModeloa, addMarka, addMatrikula, addButton, removeButton);
         hb.setSpacing(3);
         final VBox vbox = new VBox();
         vbox.setSpacing(5);

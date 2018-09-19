@@ -13,16 +13,26 @@ import javafx.beans.property.SimpleStringProperty;
  */
 public class Ibilgailuak {
 
+    private String id;
     private String modeloa;
     private String marka;
     private String matrikula;
 
-    public Ibilgailuak(String modeloa, String marka, String matrikula) { //derrigortuta nago, ezta? public jartzera beste pakete batetik sortuko dudalako?
+    public Ibilgailuak(String id, String modeloa, String marka, String matrikula) { //derrigortuta nago, ezta? public jartzera beste pakete batetik sortuko dudalako?
+        this.id = id;
         this.modeloa = new String(modeloa);
         this.marka = new String(marka);
         this.matrikula = new String(matrikula);
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+    
     public String getModeloa() {
         return modeloa;
     }

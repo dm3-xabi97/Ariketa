@@ -18,8 +18,8 @@ public class Kontroladorea {
     public static ObservableList<Ibilgailuak> DatuakSartu() {
 
         return FXCollections.observableArrayList(
-                new Ibilgailuak("Astra", "Opel", "BI-2983-CF"),
-                new Ibilgailuak("Megane", "Renault", "2988-XDF")
+                new Ibilgailuak("1","Astra", "Opel", "BI-2983-CF"),
+                new Ibilgailuak("2","Megane", "Renault", "2988-XDF")
         );
     }
 }
