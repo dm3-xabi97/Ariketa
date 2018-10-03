@@ -7,6 +7,8 @@ package View;
 
 import Controller.Kontroladorea;
 import Model.Ibilgailuak;
+import java.io.File;
+import java.io.IOException;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,6 +25,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 /**
@@ -32,50 +35,59 @@ import javafx.stage.Stage;
 public class MainWindow extends Application {
 
     private final TableView<Ibilgailuak> table = new TableView<>();
-
     final HBox hb = new HBox();
 
     @Override
-    public void start(Stage stage) {
+    public void start(Stage stage) throws IOException {
         Scene scene = new Scene(new Group());
 
-        ObservableList<Ibilgailuak> data = Kontroladorea.DatuakSartu();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Aukeratu fitxategia");
+        File aukeratutakoa = fileChooser.showOpenDialog(stage);
 
-        stage.setTitle("Datuen Taula");
+        ObservableList<Ibilgailuak> data = Kontroladorea.datuakMemorianKargatu(aukeratutakoa);
+
+        stage.setTitle("Kontzesionarioko Datuen Taula");
         stage.setWidth(550);
         stage.setHeight(550);
         final Label label = new Label("Ibilgailuak");
         label.setFont(new Font("Arial", 20));
 
         table.setEditable(true);
-        
+
         TableColumn<Ibilgailuak, String> IdZut = new TableColumn<>("Id");
         IdZut.setMinWidth(100);
         IdZut.setCellValueFactory(new PropertyValueFactory<>("id"));
         IdZut.setCellFactory(TextFieldTableCell.<Ibilgailuak>forTableColumn());
-        IdZut.setOnEditCommit((TableColumn.CellEditEvent<Ibilgailuak, String> t) -> {((Ibilgailuak) t.getTableView().getItems().get(t.getTablePosition().getRow())).setId(t.getNewValue())    ;});
+        IdZut.setOnEditCommit((TableColumn.CellEditEvent<Ibilgailuak, String> t) -> {
+            ((Ibilgailuak) t.getTableView().getItems().get(t.getTablePosition().getRow())).setId(t.getNewValue());
+        });
 
         TableColumn<Ibilgailuak, String> ModeloZut = new TableColumn<>("Izena");
         ModeloZut.setMinWidth(100);
         ModeloZut.setCellValueFactory(new PropertyValueFactory<>("modeloa"));
         ModeloZut.setCellFactory(TextFieldTableCell.<Ibilgailuak>forTableColumn());
-        ModeloZut.setOnEditCommit((TableColumn.CellEditEvent<Ibilgailuak, String> t) -> {((Ibilgailuak) t.getTableView().getItems().get(t.getTablePosition().getRow())).setModeloa(t.getNewValue());});
+        ModeloZut.setOnEditCommit((TableColumn.CellEditEvent<Ibilgailuak, String> t) -> {
+            ((Ibilgailuak) t.getTableView().getItems().get(t.getTablePosition().getRow())).setModeloa(t.getNewValue());
+        });
 
         TableColumn<Ibilgailuak, String> MarkaZut = new TableColumn<>("Marka");
         MarkaZut.setMinWidth(100);
         MarkaZut.setCellValueFactory(new PropertyValueFactory<>("marka"));
         MarkaZut.setCellFactory(TextFieldTableCell.<Ibilgailuak>forTableColumn());
-        MarkaZut.setOnEditCommit((TableColumn.CellEditEvent<Ibilgailuak, String> t) -> {((Ibilgailuak) t.getTableView().getItems().get(t.getTablePosition().getRow())).setMarka(t.getNewValue());
-                });
+        MarkaZut.setOnEditCommit((TableColumn.CellEditEvent<Ibilgailuak, String> t) -> {
+            ((Ibilgailuak) t.getTableView().getItems().get(t.getTablePosition().getRow())).setMarka(t.getNewValue());
+        });
 
         TableColumn<Ibilgailuak, String> MatrikulaZut = new TableColumn<>("Matrikula");
         MatrikulaZut.setMinWidth(200);
         MatrikulaZut.setCellValueFactory(
                 new PropertyValueFactory<>("matrikula"));
         MatrikulaZut.setCellFactory(TextFieldTableCell.<Ibilgailuak>forTableColumn());
-        MatrikulaZut.setOnEditCommit((TableColumn.CellEditEvent<Ibilgailuak, String> t) -> {((Ibilgailuak) t.getTableView().getItems().get(t.getTablePosition().getRow())).setMatrikula(t.getNewValue());
-                });
-        
+        MatrikulaZut.setOnEditCommit((TableColumn.CellEditEvent<Ibilgailuak, String> t) -> {
+            ((Ibilgailuak) t.getTableView().getItems().get(t.getTablePosition().getRow())).setMatrikula(t.getNewValue());
+        });
+
         table.setItems(data);
         table.getColumns().addAll(IdZut, ModeloZut, MarkaZut, MatrikulaZut);
         final TextField addId = new TextField();
@@ -92,19 +104,24 @@ public class MainWindow extends Application {
         addMatrikula.setPromptText("Matrikula");
 
         final Button addButton = new Button("Gehitu");
-        addButton.setOnAction((ActionEvent e) -> {Ibilgailuak i = new Ibilgailuak(addId.getText(),addModeloa.getText(),addMarka.getText(),addMatrikula.getText());
+        addButton.setOnAction((ActionEvent e) -> {
+            Ibilgailuak i = new Ibilgailuak(addId.getText(), addModeloa.getText(), addMarka.getText(), addMatrikula.getText());
             data.add(i);
 
             addId.clear();
             addModeloa.clear();
             addMarka.clear();
             addMatrikula.clear();
+            Kontroladorea.gorde(aukeratutakoa);
+            System.out.println("Sartuta");
         });
 
         final Button removeButton = new Button("Ezabatu");
         removeButton.setOnAction((ActionEvent e) -> {
             Ibilgailuak ibilgailu = table.getSelectionModel().getSelectedItem();
             data.remove(ibilgailu);
+            Kontroladorea.gorde(aukeratutakoa);
+            System.out.println("Ezabatuta");
         });
 
         hb.getChildren().addAll(addId, addModeloa, addMarka, addMatrikula, addButton, removeButton);
@@ -119,9 +136,6 @@ public class MainWindow extends Application {
 
     }
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
         launch(args);
     }

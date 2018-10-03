@@ -54,22 +54,26 @@ public class MainWindow extends Application {
         ModeloZut.setCellValueFactory(
                 new PropertyValueFactory<>("modeloa"));
         ModeloZut.setCellFactory(TextFieldTableCell.<Ibilgailuak>forTableColumn());
-        ModeloZut.setOnEditCommit((TableColumn.CellEditEvent<Ibilgailuak, String> t) -> {((Ibilgailuak) t.getTableView().getItems().get(t.getTablePosition().getRow())).setModeloa(t.getNewValue());});
+        ModeloZut.setOnEditCommit((TableColumn.CellEditEvent<Ibilgailuak, String> t) -> {
+            ((Ibilgailuak) t.getTableView().getItems().get(t.getTablePosition().getRow())).setModeloa(t.getNewValue());
+        });
 
         TableColumn<Ibilgailuak, String> MarkaZut = new TableColumn<>("Marka");
         MarkaZut.setMinWidth(100);
         MarkaZut.setCellValueFactory(new PropertyValueFactory<>("marka"));
         MarkaZut.setCellFactory(TextFieldTableCell.<Ibilgailuak>forTableColumn());
-        MarkaZut.setOnEditCommit((TableColumn.CellEditEvent<Ibilgailuak, String> t) -> {((Ibilgailuak) t.getTableView().getItems().get(t.getTablePosition().getRow())).setMarka(t.getNewValue());
-                });
+        MarkaZut.setOnEditCommit((TableColumn.CellEditEvent<Ibilgailuak, String> t) -> {
+            ((Ibilgailuak) t.getTableView().getItems().get(t.getTablePosition().getRow())).setMarka(t.getNewValue());
+        });
 
         TableColumn<Ibilgailuak, String> MatrikulaZut = new TableColumn<>("Matrikula");
         MatrikulaZut.setMinWidth(200);
         MatrikulaZut.setCellValueFactory(
                 new PropertyValueFactory<>("matrikula"));
         MatrikulaZut.setCellFactory(TextFieldTableCell.<Ibilgailuak>forTableColumn());
-        MatrikulaZut.setOnEditCommit((TableColumn.CellEditEvent<Ibilgailuak, String> t) -> {((Ibilgailuak) t.getTableView().getItems().get(t.getTablePosition().getRow())).setMatrikula(t.getNewValue());
-                });
+        MatrikulaZut.setOnEditCommit((TableColumn.CellEditEvent<Ibilgailuak, String> t) -> {
+            ((Ibilgailuak) t.getTableView().getItems().get(t.getTablePosition().getRow())).setMatrikula(t.getNewValue());
+        });
         table.setItems(data);
         table.getColumns().addAll(ModeloZut, MarkaZut, MatrikulaZut);
         final TextField addModeloa = new TextField();
@@ -83,7 +87,8 @@ public class MainWindow extends Application {
         addMatrikula.setPromptText("Matrikula");
 
         final Button addButton = new Button("Gehitu");
-        addButton.setOnAction((ActionEvent e) -> {Ibilgailuak i = new Ibilgailuak(addModeloa.getText(),addMarka.getText(),addMatrikula.getText());
+        addButton.setOnAction((ActionEvent e) -> {
+            Ibilgailuak i = new Ibilgailuak(addModeloa.getText(), addMarka.getText(), addMatrikula.getText());
             data.add(i);
 
             addModeloa.clear();

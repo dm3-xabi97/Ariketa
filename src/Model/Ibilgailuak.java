@@ -32,7 +32,7 @@ public class Ibilgailuak {
     public void setId(String id) {
         this.id = id;
     }
-    
+
     public String getModeloa() {
         return modeloa;
     }
@@ -55,6 +55,10 @@ public class Ibilgailuak {
 
     public void setMatrikula(String matrikula) {
         this.matrikula = matrikula;
+    }
+
+    public String toString() {
+        return getId() + "," + getModeloa() + "," + getMarka() + "," + getMatrikula();
     }
 
 }
