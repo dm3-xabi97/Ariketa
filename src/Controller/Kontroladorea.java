@@ -13,11 +13,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Scanner;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 
 /**
  *
@@ -28,21 +25,22 @@ public class Kontroladorea {
     static ObservableList<Ibilgailuak> data = null;
 
     public static ObservableList<Ibilgailuak> datuakMemorianKargatu(File aukeratutakoa) throws FileNotFoundException, IOException {
-        BufferedReader inputStream = null;
+        BufferedReader br = null;
+        String[] arr;
         try {
-            inputStream = new BufferedReader(new FileReader(aukeratutakoa));
+            br = new BufferedReader(new FileReader(aukeratutakoa));
             data = FXCollections.observableArrayList();
             String hitza;
-            while ((hitza = inputStream.readLine()) != null) {
-                Scanner s = new Scanner(hitza).useDelimiter(",");
-                Ibilgailuak kotxe = new Ibilgailuak(s.next(), s.next(), s.next(), s.next());   //añadir tipo de datos de las variables
+            while ((hitza = br.readLine()) != null) {
+                arr = hitza.split(",");
+                Ibilgailuak kotxe = new Ibilgailuak(arr[0], arr[1], arr[2], arr[3]);
                 data.add(kotxe);
             }
         } catch (FileNotFoundException fnfe) {
             System.out.println("Ez da fitxategia aurkitu.");
         } finally {
-            if (inputStream != null) {
-                inputStream.close();
+            if (br != null) {
+                br.close();
             }
         }
         return data;
